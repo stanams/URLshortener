@@ -1,3 +1,4 @@
+require "byebug"
 module SlidingMoves
   def lateral(row, col, n)
     possible_moves = []
@@ -21,27 +22,60 @@ module SlidingMoves
     possible_moves
   end
 
-  def filter_lateral(moves, original_obj)
-    filtered_moves = moves
+  def filtered_lateral(moves, original_obj)
+    filtered_moves = moves.dup
     curr_row, curr_col = original_obj.position
     moves.each do |pos|
       potential_row, potential_col = pos
       potential_obj = original_obj.board.grid[potential_row][potential_col]
-      offset = (potential_obj.color == original_obj.color) ? 0 : 1
-
+      overtake_enemy = (potential_obj.color == original_obj.color) ? 0 : 1
       if !potential_obj.color.nil?
-        if curr_row == potential_row && curr_col > potential_col
-          filtered_moves.reject! { |pos| pos[1] <= potential_col - offset }
-        elsif curr_row == potential_row && curr_col < potential_col
-          filtered_moves.reject! { |pos| pos[1] >= potential_col + offset }
-        elsif curr_col == potential_col && curr_row > potential_row
-          filtered_moves.reject! { |pos| pos[0] <= potential_row - offset }
-        elsif curr_col == potential_col && curr_row < potential_row
-          filtered_moves.reject! { |pos| pos[0] >= potential_row + offset }
+
+        if curr_row == potential_row && potential_col < curr_col
+          filtered_moves.reject! { |pos| pos[1] <= potential_col - overtake_enemy }
+        elsif curr_row == potential_row && potential_col > curr_col
+          filtered_moves.reject! { |pos| pos[1] >= potential_col + overtake_enemy}
+        elsif curr_col == potential_col && potential_row < curr_row
+          filtered_moves.reject! { |pos| pos[0] <= potential_row - overtake_enemy }
+        elsif curr_col == potential_col && potential_row > curr_row
+          filtered_moves.reject! { |pos| pos[0] >= potential_row + overtake_enemy }
         end
       end
 
     end
+    p filtered_moves
+    filtered_moves
+  end
+
+  def filtered_diagonal(moves, original_obj)
+    filtered_moves = moves.dup
+    curr_row, curr_col = original_obj.position
+    moves.each do |pos|
+      potential_row, potential_col = pos
+      potential_obj = original_obj.board.grid[potential_row][potential_col]
+      overtake_enemy = (potential_obj.color == original_obj.color) ? 0 : 1
+      if !potential_obj.color.nil?
+        if potential_row < curr_row &&  potential_col < curr_col #NW
+          filtered_moves.reject! do |pos|
+            pos[0] <= potential_row - overtake_enemy && pos[1] <= potential_col - overtake_enemy
+          end
+        elsif potential_row < curr_row &&  potential_col > curr_col #NE
+          filtered_moves.reject! do |pos|
+            pos[0] <= potential_row - overtake_enemy && pos[1] >= potential_col + overtake_enemy
+          end
+          [6, 2]
+        elsif potential_row > curr_row && potential_col > curr_col #SE
+          filtered_moves.reject! do |pos|
+            pos[0] >= potential_row + overtake_enemy && pos[1] >= potential_col + overtake_enemy
+          end
+        elsif potential_row > curr_row && potential_col < curr_col #SW
+          filtered_moves.reject! do |pos|
+            pos[0] >= potential_row + overtake_enemy && pos[1] <= potential_col - overtake_enemy
+          end
+        end
+      end
+    end
+    p filtered_moves
     filtered_moves
   end
 

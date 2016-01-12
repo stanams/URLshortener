@@ -10,18 +10,18 @@ class Queen < Piece
     @value = " ♛ "
   end
 
-  def valid_moves
+  def moves
     possible_moves = []
     row, col = @position
     n = @board.grid.length - 1
     possible_moves.concat(lateral(row, col, n))
     possible_moves.concat(diagonal(row, col, n))
-
     possible_moves.select do |pos|
       @board.in_bounds?(pos) && pos != @position
     end
-
   end
 
-
+  def valid_moves
+    filtered_diagonal(filtered_lateral(moves, self),self)
+  end
 end
