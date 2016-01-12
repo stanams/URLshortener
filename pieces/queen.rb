@@ -1,7 +1,6 @@
 require_relative "pieces"
 require "colorize"
 
-
 class Queen < Piece
   include SlidingMoves
 
@@ -22,6 +21,9 @@ class Queen < Piece
   end
 
   def valid_moves
-    filtered_diagonal(filtered_lateral(moves, self),self)
+    all_filtered = []
+    all_filtered.concat(filtered_lateral(moves, self))
+    all_filtered.concat(filtered_diagonal(all_filtered,self))
+    all_filtered
   end
 end

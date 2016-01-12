@@ -32,13 +32,25 @@ module SlidingMoves
       if !potential_obj.color.nil?
 
         if curr_row == potential_row && potential_col < curr_col
-          filtered_moves.reject! { |pos| pos[1] <= potential_col - overtake_enemy }
+          filtered_moves.reject! do |pos|
+            pos[0] == potential_row &&
+            pos[1] <= potential_col - overtake_enemy
+          end
         elsif curr_row == potential_row && potential_col > curr_col
-          filtered_moves.reject! { |pos| pos[1] >= potential_col + overtake_enemy}
+          filtered_moves.reject! do |pos|
+            pos[0] == potential_row &&
+            pos[1] >= potential_col + overtake_enemy
+          end
         elsif curr_col == potential_col && potential_row < curr_row
-          filtered_moves.reject! { |pos| pos[0] <= potential_row - overtake_enemy }
+          filtered_moves.reject! do |pos|
+            pos[0] <= potential_row - overtake_enemy &&
+            pos[1] == potential_col
+          end
         elsif curr_col == potential_col && potential_row > curr_row
-          filtered_moves.reject! { |pos| pos[0] >= potential_row + overtake_enemy }
+          filtered_moves.reject! do |pos|
+            pos[0] >= potential_row + overtake_enemy &&
+            pos[1] == potential_col
+          end
         end
       end
 
