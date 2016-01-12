@@ -7,7 +7,7 @@ class Knight < Piece
     @value = " ♞ "
   end
 
-  def valid_moves
+  def moves
 
     row, col = @position
     n = @board.grid.length - 1
@@ -26,5 +26,16 @@ class Knight < Piece
 
   end
 
+  def valid_moves
+    filtered_moves = []
+    moves.each do |pos|
+      row, col = pos[0], pos[1]
+      obj = @board.grid[row][col]
+      if obj.color.nil? && obj.color != @color
+        filtered_moves << pos
+      end
+    end
+    filtered_moves
+  end
 
 end

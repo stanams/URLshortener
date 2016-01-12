@@ -8,7 +8,7 @@ class Rook < Piece
     @value = " ♜ "
   end
 
-  def valid_moves
+  def moves
     row, col = @position
     n = @board.grid.length - 1
 
@@ -17,5 +17,8 @@ class Rook < Piece
     end
   end
 
+  def valid_moves(moves)
+
+  end
 
 end

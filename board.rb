@@ -24,7 +24,6 @@ class Board
   end
 
   def populate
-
     @grid.map!.with_index do |row, i|
       row.map.with_index do |space, j|
         case i
@@ -60,6 +59,17 @@ class Board
   def rows
     @grid
   end
+
+  def move()
+
+  end
+
+  def move!(old_pos, new_pos, selected_piece)
+    place_piece(new_pos, selected_piece)
+    selected_piece.position = new_pos
+    place_piece(old_pos, NullPiece.new(old_pos, @board, nil))
+  end
+
 end
 
 # if __FILE__ == $PROGRAM_NAME

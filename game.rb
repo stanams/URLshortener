@@ -15,9 +15,7 @@ class Game
     moves = selected_piece.valid_moves
     new_pos = @player.move
     if moves.include?(new_pos)
-      @board.place_piece(new_pos, selected_piece)
-      selected_piece.position = new_pos #LOOK AT THIS BUG!!!
-      @board.place_piece(pos, NullPiece.new(pos, @board, nil))
+      @board.move!(pos, new_pos, selected_piece)
     end
     @player.display.render
   end
