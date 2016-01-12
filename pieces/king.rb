@@ -1,13 +1,14 @@
 require_relative "pieces"
 
 class King < Piece
+  include SteppingMoves
 
   def initialize(position, board, color)
     super(position, board, color)
     @value = " ♚ "
   end
 
-  def valid_moves
+  def moves
 
     row, col = @position
     n = @board.grid.length - 1
@@ -24,5 +25,8 @@ class King < Piece
 
   end
 
+  def valid_moves
+    filtered_steps(moves, self)
+  end
 
 end

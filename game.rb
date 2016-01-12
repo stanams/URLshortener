@@ -25,6 +25,6 @@ end
 if __FILE__ == $PROGRAM_NAME
   game = Game.new
 
-  10.times { game.take_turn }
+  25.times { game.take_turn }
 
 end
