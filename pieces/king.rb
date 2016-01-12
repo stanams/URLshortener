@@ -1,4 +1,5 @@
 require_relative "pieces"
+require "byebug"
 
 class King < Piece
   include SteppingMoves
@@ -9,7 +10,6 @@ class King < Piece
   end
 
   def moves
-
     row, col = @position
     n = @board.grid.length - 1
     possible_moves = []
