@@ -2,11 +2,13 @@ require "colorize"
 require_relative "cursorable"
 
 class Display
+  attr_accessor :to_highlight
   include Cursorable
 
   def initialize(board)
     @board = board
     @cursor_pos = [0, 0]
+    @to_highlight = []
   end
 
   def build_grid
@@ -25,6 +27,8 @@ class Display
   def colors_for(i, j, color)
     if [i, j] == @cursor_pos
       bg = :light_red
+    elsif @to_highlight.include?([i,j])
+      bg = :green
     elsif (i + j).odd?
       bg = :light_blue
     else

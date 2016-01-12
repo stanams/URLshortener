@@ -30,7 +30,6 @@ module SlidingMoves
       potential_obj = original_obj.board.grid[potential_row][potential_col]
       overtake_enemy = (potential_obj.color == original_obj.color) ? 0 : 1
       if !potential_obj.color.nil?
-
         if curr_row == potential_row && potential_col < curr_col
           filtered_moves.reject! do |pos|
             pos[0] == potential_row &&
@@ -75,7 +74,6 @@ module SlidingMoves
           filtered_moves.reject! do |pos|
             pos[0] <= potential_row - overtake_enemy && pos[1] >= potential_col + overtake_enemy
           end
-          [6, 2]
         elsif potential_row > curr_row && potential_col > curr_col #SE
           filtered_moves.reject! do |pos|
             pos[0] >= potential_row + overtake_enemy && pos[1] >= potential_col + overtake_enemy
