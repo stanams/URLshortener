@@ -1,3 +1,4 @@
+require 'byebug'
 require_relative "board"
 require_relative "player"
 
@@ -15,6 +16,7 @@ class Game
     new_pos = @player.move
     if moves.include?(new_pos)
       @board.place_piece(new_pos, selected_piece)
+      selected_piece.position = new_pos #LOOK AT THIS BUG!!!
       @board.place_piece(pos, NullPiece.new(pos, @board, nil))
     end
     @player.display.render

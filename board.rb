@@ -1,3 +1,4 @@
+require 'byebug'
 require "colorize"
 require_relative "./pieces/pieces"
 require_relative "display"
@@ -61,11 +62,11 @@ class Board
   end
 end
 
-if __FILE__ == $PROGRAM_NAME
-  board = Board.new
-  board.populate
-  board.grid[4][4] = Rook.new([4,4], board)
-  display = Display.new(board)
-  display.render
-
-end
+# if __FILE__ == $PROGRAM_NAME
+#   board = Board.new
+#   board.populate
+#   board.grid[4][4] = Rook.new([4,4], board)
+#   display = Display.new(board)
+#   display.render
+#
+# end
