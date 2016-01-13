@@ -6,8 +6,8 @@ class Pawn < Piece
   def initialize(position, board, color)
     super(position, board, color)
     @value = " ♟ "
-    @initial_row = position[0]
-    @first_move = true
+    @initial_row = color == :black ? 1 : 6
+    @first_move = @initial_row == position[0]
   end
 
   def moves

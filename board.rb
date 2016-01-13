@@ -5,9 +5,9 @@ require_relative "display"
 class Board
   attr_accessor :grid
 
-  def initialize
+  def initialize(pop = true)
     @grid = Array.new(8) { Array.new(8) { nil } }
-    populate
+    populate if pop
   end
 
   def back_row(i, j, color)

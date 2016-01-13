@@ -1,5 +1,7 @@
 require "byebug"
 module SlidingMoves
+
+  # Returns array of all possible lateral (up, down, left, right) moves
   def lateral(row, col, n)
     possible_moves = []
     (-n..n).each do |delta_row|
@@ -11,6 +13,7 @@ module SlidingMoves
     possible_moves
   end
 
+  #Returns array of diagonal moves
   def diagonal(row, col, n)
     possible_moves = []
     (-n..n).each do |delta_right_diag|
@@ -22,6 +25,7 @@ module SlidingMoves
     possible_moves
   end
 
+  #Filters lateral moves
   def filtered_lateral(moves, original_obj)
     filtered_moves = moves.dup
     curr_row, curr_col = original_obj.position
@@ -54,7 +58,6 @@ module SlidingMoves
       end
 
     end
-    p filtered_moves
     filtered_moves
   end
 
@@ -85,7 +88,6 @@ module SlidingMoves
         end
       end
     end
-    p filtered_moves
     filtered_moves
   end
 

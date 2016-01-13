@@ -23,9 +23,11 @@ class Queen < Piece
   end
 
   def valid_moves
+    lateral_moves, diagonal_moves = moves
+
     all_filtered = []
-    all_filtered.concat(filtered_lateral(moves[0], self))
-    all_filtered.concat(filtered_diagonal(moves[1],self))
+    all_filtered.concat(filtered_lateral(lateral_moves, self))
+    all_filtered.concat(filtered_diagonal(diagonal_moves,self))
     all_filtered
   end
 end
