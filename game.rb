@@ -13,22 +13,33 @@ class Game
   end
 
   def take_turn
+  begin
     @pos = pick_a_spot
     piece = select_a_piece(@pos)
-    moves = piece.valid_moves
+    almost_valid = piece.valid_moves
+    moves = almost_valid.reject { |pos| pos == (get_king(@board, @other_player.color)[0].position) }
+
     @curr_player.highlight_poss(moves)
 
     set_the_piece(moves, piece)
 
     @curr_player.unhighlight_poss
-    new_board = dup_board
-    if board_in_check?(new_board, @other_player.color)
-      if checkmate?(new_board, @other_player.color)
-        notify_mate
-      end
-      notify_check
-    end
+    check_move(dup_board)
+  rescue
+    puts "CHECK, MOFUCKAH"
+    sleep(2)
+  end
     player_switch
+  end
+
+  def check_move(board)
+    if board_in_check?(board, @other_player.color)
+      if checkmate?(board, @other_player.color)
+        notify_mate
+      else
+        raise "CHECK, MOFUCKAH!"
+      end
+    end
   end
 
   def notify_mate
@@ -37,18 +48,44 @@ class Game
     exit
   end
 
-  def checkmate?(board, color)
-    king = board.grid.flatten.select do |piece|
+  def get_king(board, color)
+    board.grid.flatten.select do |piece|
       piece.color == color && piece.class == King
-    end
-    debugger
-    king[0].valid_moves.all? do |move|
-      new_board = dup_board
-      new_board.move!(@pos, move, king[0])
-      board_in_check?(new_board, king[0].color)
     end
   end
 
+
+  def kings_valid_moves(king)
+    return king.valid_moves.all? do |move|
+      new_board = dup_board
+      new_board.move!(king.position, move, king)
+      board_in_check?(new_board, king.color)
+    end
+  end
+
+  def checkmate?(board, color)
+    king = get_king(board, color)
+    check = kings_valid_moves(king[0])
+    if check
+      get_out_of_check_moves = escape_routes(board, color, king[0])
+    end
+    get_out_of_check_moves.length == 0
+  end
+
+  def escape_routes(board, color, king)
+    get_out_of_check_moves = []
+    all_pieces = board.grid.flatten.select { |piece| piece.color == color }
+    all_pieces.each do |piece|
+      piece.valid_moves.each do |move|
+        new_board = dup_board
+        new_board.move!(piece.position, move, piece)
+        unless board_in_check?(new_board, king.color)
+          get_out_of_check_moves << move
+        end
+      end
+    end
+    get_out_of_check_moves
+  end
 
   def notify_check
     puts "CHECK, MOFUCKAAAHHH"
@@ -92,23 +129,33 @@ class Game
   end
 
   def set_the_piece(moves, selected_piece)
+    begin
     new_pos = @curr_player.move
     if moves.include?(new_pos)
       row, col = new_pos
       if selected_piece.class == King
-        new_board = dup_board
-        new_board.move!(@pos, new_pos, selected_piece)
-        if board_in_check?(new_board, @curr_player.color)
-          puts "That would put you in check. Think againnnn!"
-          sleep(2)
-        else
-          @board.move!(@pos, new_pos, selected_piece)
-        end
+        check_kings_move_for_check
       else
         @board.move!(@pos, new_pos, selected_piece)
       end
     end
+    rescue
+      puts "That would put you in check. Think againnnn!"
+      sleep(2)
+      @curr_player.unhighlight_poss
+      take_turn
+    end
     @curr_player.display.render
+  end
+
+  def check_kings_move_for_check(new_pos, selected_piece)
+    new_board = dup_board
+    new_board.move!(@pos, new_pos, selected_piece)
+    if board_in_check?(new_board, @curr_player.color)
+      raise "That would put you in check. Think againnnn!"
+    else
+      @board.move!(@pos, new_pos, selected_piece)
+    end
   end
 
   def player_switch

@@ -7,7 +7,7 @@ class NullPiece < Piece
     @value = "   "
   end
 
-  def moves
+  def valid_moves
     []
   end
 
