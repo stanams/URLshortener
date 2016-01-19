@@ -19,7 +19,7 @@ class Users
 
   def self.find_by_id(id)
     db = QuestionsDatabase.instance
-    found_user = db.execute(<<-SQL)
+    all = db.execute(<<-SQL)
       SELECT
         *
       FROM
@@ -27,11 +27,14 @@ class Users
       WHERE
         id = #{id}
     SQL
+
+    all.map { |user| Users.new(user) }
+
   end
 
   def self.find_by_name(fname, lname)
     db = QuestionsDatabase.instance
-    found_user = db.execute(<<-SQL)
+    all = db.execute(<<-SQL)
       SELECT
         *
       FROM
@@ -39,6 +42,8 @@ class Users
       WHERE
         fname = #{fname} AND lname = #{lname}
     SQL
+
+    all.map { |user| Users.new(user) }
   end
 
   def authored_questions
