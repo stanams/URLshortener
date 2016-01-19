@@ -29,7 +29,6 @@ class Users
     SQL
 
     all.map { |user| Users.new(user) }
-
   end
 
   def self.find_by_name(fname, lname)
@@ -60,6 +59,24 @@ class Users
 
   def liked_questions
     QuestionLikes.liked_questions_for_user_id(self.id)
+  end
+
+  def average_karma
+    db = QuestionsDatabase.instance
+    db.execute(<<-SQL)
+      SELECT
+        CAST(COUNT(question_likes.user_id) AS FLOAT) /
+        COUNT(DISTINCT(questions.title))
+
+      FROM
+        questions
+      LEFT OUTER JOIN
+        question_likes ON questions.id = question_likes.question_id
+      GROUP BY
+        questions.author_id
+      HAVING
+        questions.author_id = #{self.id}
+    SQL
   end
 
 end

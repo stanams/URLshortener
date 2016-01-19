@@ -19,13 +19,13 @@ class Question
 
   def self.find_by_id(id)
     db = QuestionsDatabase.instance
-    all = db.execute(<<-SQL)
+    all = db.execute(<<-SQL, id: id)
       SELECT
         *
       FROM
         questions
       WHERE
-        id = #{id}
+        id = :id
     SQL
 
     all.map { |question| Question.new(question) }
