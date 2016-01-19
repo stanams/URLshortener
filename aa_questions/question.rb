@@ -1,5 +1,17 @@
+require 'byebug'
 class Question
   attr_accessor :id, :title, :body, :author_id
+
+  def self.all_questions
+    all = QuestionsDatabase.instance.execute(<<-SQL)
+      SELECT
+        *
+      FROM
+        questions
+    SQL
+
+    all.map { |question| Question.new(question) }
+  end
 
   def initialize(options)
     @id, @title, @body, @author_id = options.values_at('id', 'title', 'body', 'author_id')
@@ -7,7 +19,7 @@ class Question
 
   def self.find_by_id(id)
     db = QuestionsDatabase.instance
-    found_question = db.execute(<<-SQL)
+    db.execute(<<-SQL)
       SELECT
         *
       FROM
@@ -15,13 +27,11 @@ class Question
       WHERE
         id = #{id}
     SQL
-    return nil if found_question.empty?
-    new_question = Question.new(found_question.first)
   end
 
   def self.find_by_author_id(author_id)
     db = QuestionsDatabase.instance
-    found_question = db.execute(<<-SQL)
+    db.execute(<<-SQL)
       SELECT
         *
       FROM
@@ -29,9 +39,14 @@ class Question
       WHERE
         author_id = #{author_id}
     SQL
-    return nil if found_question.empty?
-    new_question = Question.new(found_question.first)
   end
 
+  def author
+    Users.find_by_id(self.author_id)
+  end
+
+  def replies
+    Replies.find_by_question_id(self.id)
+  end
 
 end

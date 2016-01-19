@@ -1,5 +1,17 @@
+require 'byebug'
 class Users
   attr_accessor :id, :fname, :lname
+
+  def self.all_users
+    all = QuestionsDatabase.instance.execute(<<-SQL)
+      SELECT
+        *
+      FROM
+        users
+    SQL
+
+    all.map { |user| Users.new(user) }
+  end
 
   def initialize(options)
     @id, @fname, @lname = options.values_at('id', 'fname', 'lname')
@@ -15,9 +27,26 @@ class Users
       WHERE
         id = #{id}
     SQL
-    return nil if found_user.empty?
-    new_user = Users.new(found_user.first)
   end
 
+  def self.find_by_name(fname, lname)
+    db = QuestionsDatabase.instance
+    found_user = db.execute(<<-SQL)
+      SELECT
+        *
+      FROM
+        users
+      WHERE
+        fname = #{fname} AND lname = #{lname}
+    SQL
+  end
+
+  def authored_questions
+    Question.find_by_author_id(self.id)
+  end
+
+  def authored_replies
+    Replies.find_by_reply_author_id(self.id)
+  end
 
 end
