@@ -73,7 +73,7 @@ VALUES
 INSERT INTO
   question_follows (user_id, question_id)
 VALUES
-  (1, 2),
+  (1, 3),
   (4, 1),
   (4, 2),
   (7, 4),

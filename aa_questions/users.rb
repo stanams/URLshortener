@@ -54,4 +54,12 @@ class Users
     Replies.find_by_reply_author_id(self.id)
   end
 
+  def followed_questions
+    QuestionFollows.followed_questions_for_user_id(self.id)
+  end
+
+  def liked_questions
+    QuestionLikes.liked_questions_for_user_id(self.id)
+  end
+
 end
