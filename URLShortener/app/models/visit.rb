@@ -23,4 +23,11 @@ class Visit < ActiveRecord::Base
     :primary_key => :id,
     :foreign_key => :shortened_url_id,
     :class_name => 'ShortenedUrl'
+
+    def self.record_visit!(user, shortened_url)
+      Visit.create!(:shortened_url_id => shortened_url.id,
+                    :user_id => user.id)
+    end
+
+
 end

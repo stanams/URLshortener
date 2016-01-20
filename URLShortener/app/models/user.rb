@@ -20,4 +20,9 @@ class User < ActiveRecord::Base
     :primary_key => :id,
     :foreign_key => :user_id,
     :class_name => 'Visit'
+
+  has_many :visited_urls,
+    :through => :visits,
+    :source => :shortened_url
+
 end

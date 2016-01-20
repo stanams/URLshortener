@@ -24,6 +24,10 @@ class ShortenedUrl < ActiveRecord::Base
     :foreign_key => :shortened_url_id,
     :class_name => 'Visit'
 
+  has_many :visitors,
+    :through => :visits,
+    :source => :user
+
   def self.random_code
     short_url = SecureRandom.base64
     while ShortenedUrl.exists?(:short_url => short_url)
