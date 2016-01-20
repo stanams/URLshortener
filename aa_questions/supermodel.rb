@@ -22,6 +22,23 @@ class SuperModel
     end
   end
 
+  def update
+    db = QuestionsDatabase.instance
+
+    params = self.instance_variables.drop(1)
+    vars = params.map { |var| self.instance_variable_get(var) }
+    inserts = params.map { |sym| sym[1..-1].to_s + " = ?"}.join(", ")
+
+    db.execute(<<-SQL, *vars, id: id)
+      UPDATE
+        #{TABLES[self.class.to_s]}
+      SET
+        #{inserts}
+      WHERE
+        id = :id
+    SQL
+  end
+
 
   def self.find_by_id(id)
     db = QuestionsDatabase.instance

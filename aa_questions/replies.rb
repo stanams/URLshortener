@@ -14,19 +14,6 @@ class Replies < SuperModel
                               'body')
   end
 
-
-  def update
-    db = QuestionsDatabase.instance
-    db.execute(<<-SQL, id: self.id, subject_question: self.subject_question, parent_reply_id: self.parent_reply_id, reply_author_id: self.reply_author_id, body: self.body)
-      UPDATE
-        replies
-      SET
-        subject_question = :subject_question, parent_reply = :parent_reply_id, reply_author_id = :reply_author_id, body = :body
-      WHERE
-        id = :id
-    SQL
-  end
-
   def self.find_by_question_id(subject_question)
     db = QuestionsDatabase.instance
     all = db.execute(<<-SQL, subject_question: subject_question)

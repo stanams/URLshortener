@@ -35,19 +35,7 @@ class Users < SuperModel
   def liked_questions
     QuestionLikes.liked_questions_for_user_id(self.id)
   end
-
-  def update
-    db = QuestionsDatabase.instance
-    params = [self.fname, self.lname]
-    db.execute(<<-SQL, *params, id: id)
-      UPDATE
-        users
-      SET
-        fname = ?, lname = ?
-      WHERE
-        id = :id
-    SQL
-  end
+  
 
   def average_karma
     db = QuestionsDatabase.instance
