@@ -1,0 +1,550 @@
+SELECT name, continent, population FROM countries WHERE continent NOT IN (SELECT DISTINCT continent FROM countries WHERE population > 25000000);
+SELECT DISTINCT continent FROM countries WHERE population > 25000000;
+SELECT DISTINCT continent FROM countries WHERE population > 25000000;
+select continent from countreis
+;
+SELECT DISTINCT continent FROM countries;
+SELECT continent, COUNT(name) FROM countries GROUP BY continent
+;
+SELECT continent, COUNT(name) FROM countries;
+SELECT continent, name FROM countries;
+SELECT continent, name FROM countries GROUP BY continent
+;
+SELECT continent, COUNT(name) FROM countries GROUP BY continent
+;
+SELECT continent, SUM(population) FROM countries GROUP BY continent
+;
+SELECT
+          SUM(population) AS pop_sum
+        FROM
+          countries
+        GROUP BY
+          continent;
+    SELECT
+      SUM(population) AS pop_sum
+    FROM
+      countries
+    WHERE
+      pop_sum > 100000000
+    GROUP BY
+      continent
+';
+;
+'
+;
+    SELECT
+      SUM(population) AS pop_sum
+    FROM
+      countries
+    WHERE
+      pop_sum > 100000000
+    GROUP BY
+      continent
+;
+    SELECT
+      SUM(population) AS 'pop_sum'
+    FROM
+      countries
+    WHERE
+      'pop_sum' > 100000000
+    GROUP BY
+      continent
+;
+    SELECT
+      continent, SUM(population) AS pop_sum
+    FROM
+      countries
+    GROUP BY
+      continent
+;
+    SELECT
+      continent, SUM(population) AS pop_sum
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      pop_sum > 100000000;
+SELECT
+      continent, SUM(population)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      SUM(population) > 100000000
+;
+SELECT
+      continent, SUM(population)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      SUM(population) > 1000000000
+;
+SELECT
+      continent, SUM(population)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      SUM(population) >= 100000000;
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      SUM(population) >= 100000000
+;
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      name LIKE "A%"
+;
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      name LIKE "Europe"
+;
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      SUM(population) >= 100000000
+;
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      name
+;
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      name = "Europe"
+;
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      name = "Afghanistan
+;
+"
+;
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      name = "Afghanistan";
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      name = "population";
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      population > 0;
+SELECT
+      continent
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      COUNT(name) > 10;
+SELECT
+      continent. name
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      COUNT(name) > 10;
+SELECT
+      continent, name
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      COUNT(name) > 10;
+SELECT
+      continent, COUNT(name)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      COUNT(name) > 10;
+SELECT
+      continent, COUNT(name)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      COUNT(name) > 10;
+SELECT
+      continent, COUNT(name)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      COUNT(name) > 20;
+SELECT
+      continent, COUNT(name)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      MAX(name) > 20;
+SELECT
+      continent, COUNT(name)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      MAX(name) = 20;
+SELECT
+      continent, COUNT(name)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      MAX(population) > 20;
+SELECT
+      continent, COUNT(name)
+    FROM
+      countries
+    GROUP BY
+      continent
+    HAVING
+      MAX(population) > 20;
+\d actors
+\d movies
+\d castings
+    SELECT
+      movies.yr, COUNT(movies.title)
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      actors.name LIKE 'John Travolta'
+    GROUP BY
+      movies.yr
+    HAVING
+      COUNT(movies.title) >= 2
+;
+    SELECT
+      movies.yr, movies.title
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      actors.name LIKE 'John Travolta'
+    GROUP BY
+      movies.yr
+    HAVING
+      COUNT(movies.title) >= 2;
+    SELECT
+      movies.yr, movies.title
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      actors.name LIKE 'John Travolta';
+    SELECT
+      movies.yr, movies.title
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      actors.name LIKE 'John Travolta';
+    SELECT
+      movies.yr, movies.title
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      actors.name LIKE 'John Travolta';
+SELECT
+      movies.title, actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE actors.id IN (
+      SELECT
+        id
+      FROM
+        actors
+      WHERE
+        name LIKE 'Julie Andrews'
+    );
+SELECT
+      movies.title, actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE actors.id IN (
+      SELECT
+        id
+      FROM
+        actors
+      WHERE
+        name LIKE 'Julie Andrews'
+    )
+;
+  SELECT
+      movies.title, actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE actors.name LIKE 'Dudley Moore';
+  SELECT
+      *
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE actors.name LIKE 'Dudley Moore';
+  SELECT
+      *
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE actors.name LIKE 'Dudley Moore'\g;
+  SELECT
+      *
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE actors.name LIKE 'Dudley Moore'/g;
+  SELECT
+      *
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE actors.name LIKE 'Dudley Moore';
+  SELECT
+      *
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE movies.title LIKE '10'
+;
+  SELECT
+      actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE movies.title LIKE '10'
+;
+SELECT
+        movies.title
+      FROM 
+        movies
+      JOIN
+        castings ON movies.id = castings.movie_id
+      JOIN
+        actors ON castings.actor_id = actors.id
+      WHERE
+        actors.name LIKE 'Julie Andrews';
+    SELECT
+      movies.title, actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE movies.title IN (
+      SELECT
+        movies.title
+      FROM
+        movies
+      JOIN
+        castings ON movies.id = castings.movie_id
+      JOIN
+        actors ON castings.actor_id = actors.id
+      WHERE
+        actors.name LIKE 'Julie Andrews'
+    );
+    SELECT
+      movies.title, actors.name, castings.ord
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE movies.title IN (
+      SELECT
+        movies.title
+      FROM
+        movies
+      JOIN
+        castings ON movies.id = castings.movie_id
+      JOIN
+        actors ON castings.actor_id = actors.id
+      WHERE
+        actors.name LIKE 'Julie Andrews'
+    );
+execute(<<-SQL)
+    SELECT
+      actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      casting.ord = 1
+;
+SELECT
+      actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      casting.ord = 1;
+  SELECT
+      actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      castings.ord = 1
+;
+SELECT
+      actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      castings.ord = 1
+    GROUP BY
+      actors.name
+    HAVING
+      COUNT(movies.id);
+SELECT
+      actors.name
+    FROM
+      movies
+    JOIN
+      castings ON movies.id = castings.movie_id
+    JOIN
+      actors ON castings.actor_id = actors.id
+    WHERE
+      castings.ord = 1
+    GROUP BY
+      actors.name
+    HAVING
+      COUNT(movies.id) > 14;
+SELECT
+          castings.movie_id
+        FROM
+          castings
+        JOIN
+          actors ON castings.actor_id = actors.id
+        WHERE
+          actors.name LIKE 'Art Garfunkel'
+;
+    SELECT
+      teachers.name
+    FROM
+      teachers
+    LEFT OUTER JOIN
+      depts ON teachers.dept_id = depts.id;
+\d teachers
+\s teachers
