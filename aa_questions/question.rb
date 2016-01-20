@@ -1,45 +1,50 @@
 require 'byebug'
-class Question
+class Question < SuperModel
   attr_accessor :id, :title, :body, :author_id
-
-  def self.all_questions
-    all = QuestionsDatabase.instance.execute(<<-SQL)
-      SELECT
-        *
-      FROM
-        questions
-    SQL
-
-    all.map { |question| Question.new(question) }
-  end
 
   def initialize(options)
     @id, @title, @body, @author_id = options.values_at('id', 'title', 'body', 'author_id')
   end
 
-  def self.find_by_id(id)
+  def save
+    if !self.id.nil?
+      update
+    else
+      db = QuestionsDatabase.instance
+      params = [self.title, self.body, self.author_id]
+      db.execute(<<-SQL, *params)
+        INSERT INTO
+          questions (title, body, author_id)
+        VALUES
+          (?, ?, ?)
+      SQL
+
+      @id = db.last_insert_row_id
+    end
+  end
+
+  def update
     db = QuestionsDatabase.instance
-    all = db.execute(<<-SQL, id: id)
-      SELECT
-        *
-      FROM
+    params = [self.title, self.body, self.author_id]
+    db.execute(<<-SQL, *params, id: id)
+      UPDATE
         questions
+      SET
+        title = ?, body = ?, author_id = ?
       WHERE
         id = :id
     SQL
-
-    all.map { |question| Question.new(question) }
   end
 
   def self.find_by_author_id(author_id)
     db = QuestionsDatabase.instance
-    all = db.execute(<<-SQL)
+    all = db.execute(<<-SQL, author_id: author_id)
       SELECT
         *
       FROM
         questions
       WHERE
-        author_id = #{author_id}
+        author_id = :author_id
     SQL
 
     all.map { |question| Question.new(question) }

@@ -1,45 +1,20 @@
 require 'byebug'
-class Users
+class Users < SuperModel
   attr_accessor :id, :fname, :lname
-
-  def self.all_users
-    all = QuestionsDatabase.instance.execute(<<-SQL)
-      SELECT
-        *
-      FROM
-        users
-    SQL
-
-    all.map { |user| Users.new(user) }
-  end
 
   def initialize(options)
     @id, @fname, @lname = options.values_at('id', 'fname', 'lname')
   end
 
-  def self.find_by_id(id)
-    db = QuestionsDatabase.instance
-    all = db.execute(<<-SQL)
-      SELECT
-        *
-      FROM
-        users
-      WHERE
-        id = #{id}
-    SQL
-
-    all.map { |user| Users.new(user) }
-  end
-
   def self.find_by_name(fname, lname)
     db = QuestionsDatabase.instance
-    all = db.execute(<<-SQL)
+    all = db.execute(<<-SQL, fname: fname, lname: lname)
       SELECT
         *
       FROM
         users
       WHERE
-        fname = #{fname} AND lname = #{lname}
+        fname = :fname AND lname = :lname
     SQL
 
     all.map { |user| Users.new(user) }
@@ -61,9 +36,39 @@ class Users
     QuestionLikes.liked_questions_for_user_id(self.id)
   end
 
+  def save
+    if !self.id.nil?
+      update
+    else
+      db = QuestionsDatabase.instance
+      params = [self.fname, self.lname]
+      db.execute(<<-SQL, *params)
+        INSERT INTO
+          users (fname, lname)
+        VALUES
+          (?, ?)
+      SQL
+
+      @id = db.last_insert_row_id
+    end
+  end
+
+  def update
+    db = QuestionsDatabase.instance
+    params = [self.fname, self.lname]
+    db.execute(<<-SQL, *params, id: id)
+      UPDATE
+        users
+      SET
+        fname = ?, lname = ?
+      WHERE
+        id = :id
+    SQL
+  end
+
   def average_karma
     db = QuestionsDatabase.instance
-    db.execute(<<-SQL)
+    db.execute(<<-SQL, id: id)
       SELECT
         CAST(COUNT(question_likes.user_id) AS FLOAT) /
         COUNT(DISTINCT(questions.title))
@@ -75,7 +80,7 @@ class Users
       GROUP BY
         questions.author_id
       HAVING
-        questions.author_id = #{self.id}
+        questions.author_id = :id
     SQL
   end
 
