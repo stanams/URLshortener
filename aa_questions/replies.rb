@@ -14,22 +14,6 @@ class Replies < SuperModel
                               'body')
   end
 
-  def save
-    if !self.id.nil?
-      update
-    else
-      db = QuestionsDatabase.instance
-      params = [self.subject_question, self.parent_reply_id, self.reply_author_id, self.body]
-      db.execute(<<-SQL, *params)
-        INSERT INTO
-          replies (subject_question, parent_reply, reply_author_id, body)
-        VALUES
-          (?, ?, ?, ?)
-      SQL
-
-      @id = db.last_insert_row_id
-    end
-  end
 
   def update
     db = QuestionsDatabase.instance

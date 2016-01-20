@@ -6,35 +6,6 @@ class Question < SuperModel
     @id, @title, @body, @author_id = options.values_at('id', 'title', 'body', 'author_id')
   end
 
-  def save
-    if !self.id.nil?
-      update
-    else
-      db = QuestionsDatabase.instance
-      params = [self.title, self.body, self.author_id]
-      db.execute(<<-SQL, *params)
-        INSERT INTO
-          questions (title, body, author_id)
-        VALUES
-          (?, ?, ?)
-      SQL
-
-      @id = db.last_insert_row_id
-    end
-  end
-
-  def update
-    db = QuestionsDatabase.instance
-    params = [self.title, self.body, self.author_id]
-    db.execute(<<-SQL, *params, id: id)
-      UPDATE
-        questions
-      SET
-        title = ?, body = ?, author_id = ?
-      WHERE
-        id = :id
-    SQL
-  end
 
   def self.find_by_author_id(author_id)
     db = QuestionsDatabase.instance

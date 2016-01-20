@@ -36,23 +36,6 @@ class Users < SuperModel
     QuestionLikes.liked_questions_for_user_id(self.id)
   end
 
-  def save
-    if !self.id.nil?
-      update
-    else
-      db = QuestionsDatabase.instance
-      params = [self.fname, self.lname]
-      db.execute(<<-SQL, *params)
-        INSERT INTO
-          users (fname, lname)
-        VALUES
-          (?, ?)
-      SQL
-
-      @id = db.last_insert_row_id
-    end
-  end
-
   def update
     db = QuestionsDatabase.instance
     params = [self.fname, self.lname]

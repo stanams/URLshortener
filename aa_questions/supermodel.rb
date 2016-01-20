@@ -1,6 +1,26 @@
 require 'byebug'
 class SuperModel
 
+  def save
+    if !self.id.nil?
+      update
+    else
+      db = QuestionsDatabase.instance
+      params = self.instance_variables.drop(1)
+      vars = params.map { |var| self.instance_variable_get(var) }
+      inserts = params.map { |sym| sym[1..-1].to_s }.join(", ")
+      ques = ("?, " * vars.length)[0...-2]
+      debugger
+      db.execute(<<-SQL, *vars)
+        INSERT INTO
+          #{TABLES[self.class.to_s]} (#{inserts})
+        VALUES
+          (#{ques})
+      SQL
+
+      @id = db.last_insert_row_id
+    end
+  end
 
 
   def self.find_by_id(id)
